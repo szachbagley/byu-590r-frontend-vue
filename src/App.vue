@@ -154,7 +154,7 @@ export default {
 	<v-app :theme="theme">
 		<v-app-bar v-if="isAuthenticated">
 			<v-spacer></v-spacer>
-			<v-btn to="/home" default>Home</v-btn>
+			<v-btn to="home" default>Home</v-btn>
 			<v-btn to="about">About</v-btn>
 			<v-btn to="articles">Articles</v-btn>
 
