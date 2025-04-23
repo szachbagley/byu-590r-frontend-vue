@@ -156,7 +156,7 @@ export default {
 			<v-spacer></v-spacer>
 			<v-btn to="/home" default>Home</v-btn>
 			<v-btn to="about">About</v-btn>
-			<v-btn to="/articles">Articles</v-btn>
+			<v-btn to="articles">Articles</v-btn>
 
 			<v-menu min-width="200px" rounded>
 				<template v-slot:activator="{ props }">

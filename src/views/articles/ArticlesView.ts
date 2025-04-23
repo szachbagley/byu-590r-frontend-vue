@@ -6,49 +6,6 @@ import { auth } from "@/store/auth.module"
 import { create } from "eslint-plugin-vue/lib/rules/attribute-hyphenation"
 export default {
 	name: "ArticlesView",
-	computed: {
-		...mapState({
-			articles() {
-				return this.$store.state.article.articlesList
-			},
-			publications() {
-				return this.$store.state.article.publications
-			},
-			topics() {
-				return this.$store.state.article.topics
-			}
-		})
-	},
-	created() {
-		this.getArticles()
-	},
-	data: function () {
-		return {
-			newArticle: {
-				title: "",
-				author: "",
-				link: "",
-				image: "",
-				publication_id: "",
-				topics: []
-			},
-			editArticle: {
-				id: null,
-				title: "",
-				author: "",
-				link: "",
-				image: null as File | null,
-				publication_id: null as number | null,
-				topics: [] as number[]
-			},
-			selectedDeleteArticle: {},
-			editArticleDialog: false,
-			createArticleDialog: false,
-			editImageChangeDialogBtn: false,
-			deleteArticleDialog: false,
-			articleIsDeleting: false
-		}
-	},
 	methods: {
 		getArticles() {
 			this.$store
@@ -176,6 +133,49 @@ export default {
 			if (!image.length) return
 
 			this.newArticle.image = image[0]
+		}
+	},
+	computed: {
+		...mapState({
+			articles() {
+				return this.$store.state.article.articlesList
+			},
+			publications() {
+				return this.$store.state.article.publications
+			},
+			topics() {
+				return this.$store.state.article.topics
+			}
+		})
+	},
+	created() {
+		this.getArticles()
+	},
+	data: function () {
+		return {
+			newArticle: {
+				title: "",
+				author: "",
+				link: "",
+				image: "",
+				publication_id: "",
+				topics: []
+			},
+			editArticle: {
+				id: null,
+				title: "",
+				author: "",
+				link: "",
+				image: null as File | null,
+				publication_id: null as number | null,
+				topics: [] as number[]
+			},
+			selectedDeleteArticle: {},
+			editArticleDialog: false,
+			createArticleDialog: false,
+			editImageChangeDialogBtn: false,
+			deleteArticleDialog: false,
+			articleIsDeleting: false
 		}
 	}
 }
