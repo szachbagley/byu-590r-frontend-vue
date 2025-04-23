@@ -70,7 +70,11 @@ export default {
 		})
 	},
 	updated() {
-		if (this.isAuthenticated) {
+		if (
+			this.isAuthenticated &&
+			this.$route.name !== "home" &&
+			this.$route.name !== "articles"
+		) {
 			this.$router.push({ name: "home" })
 		}
 	},

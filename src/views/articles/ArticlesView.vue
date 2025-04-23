@@ -50,6 +50,19 @@
 						{{ article.link }}
 					</v-card-text>
 				</v-card-item>
+				<v-card-item>
+					<v-card-text>
+						<div class="topic-chips">
+							<v-chip
+								v-for="t in article.topics"
+								:key="t.id"
+								small
+							>
+								{{ t.name }}
+							</v-chip>
+						</div>
+					</v-card-text>
+				</v-card-item>
 
 				<v-card-actions>
 					<v-row>
@@ -116,6 +129,15 @@
 							:items="publications"
 							item-title="name"
 							item-value="id"
+						></v-select>
+						<v-select
+							v-model="newArticle.topics"
+							label="Topics"
+							:items="topics"
+							item-title="name"
+							item-value="id"
+							multiple
+							chips
 						></v-select>
 					</v-row>
 					<v-row>
@@ -187,6 +209,15 @@
 							item-title="name"
 							item-value="id"
 						></v-select>
+						<v-select
+							v-model="editArticle.topics"
+							:items="topics"
+							item-title="name"
+							item-value="id"
+							multiple
+							chips
+							label="Topics"
+						/>
 					</v-row>
 					<v-row>
 						<v-col cols="12">

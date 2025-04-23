@@ -13,6 +13,9 @@ export default {
 			},
 			publications() {
 				return this.$store.state.article.publications
+			},
+			topics() {
+				return this.$store.state.article.topics
 			}
 		})
 	},
@@ -26,9 +29,18 @@ export default {
 				author: "",
 				link: "",
 				image: "",
-				publication_id: ""
+				publication_id: "",
+				topics: []
 			},
-			editArticle: {},
+			editArticle: {
+				id: null,
+				title: "",
+				author: "",
+				link: "",
+				image: null as File | null,
+				publication_id: null as number | null,
+				topics: [] as number[]
+			},
 			selectedDeleteArticle: {},
 			editArticleDialog: false,
 			createArticleDialog: false,
@@ -54,15 +66,30 @@ export default {
 				author: "",
 				link: "",
 				image: "",
-				publication_id: 1
+				publication_id: 1,
+				topics: []
 			}
 			this.createArticleDialog = true
 		},
 		closeCreateDialog() {
 			this.createArticleDialog = false
 		},
-		openEditDialog(article) {
-			this.editArticle = article
+		openEditDialog(article: any) {
+			// make sure topics is always an array
+			const topicIds: number[] = Array.isArray(article.topics)
+				? article.topics.map((t: any) => t.id)
+				: []
+
+			this.editArticle = {
+				id: article.id,
+				title: article.title,
+				author: article.author,
+				link: article.link,
+				publication_id: article.publication_id,
+				image: null,
+				topics: topicIds
+			}
+
 			this.editArticleDialog = true
 		},
 		openDeleteDialog(article) {
@@ -76,10 +103,14 @@ export default {
 				.dispatch("article/createArticle", this.newArticle)
 				.then(() => {
 					this.closeCreateDialog()
-					this.articleIsCreating = false
+
+					return this.getArticles()
 				})
 				.catch((error) => {
 					this.newArticleErrorMessage = error.response.data.data
+					this.articleIsCreating = false
+				})
+				.finally(() => {
 					this.articleIsCreating = false
 				})
 		},
@@ -91,11 +122,14 @@ export default {
 				.then(() => {
 					this.editArticleDialog = false
 					this.editImageChangeDialogBtn = false
-					this.editArticle = {}
-					this.articleIsUpdating = false
+
+					// refresh your list so the new title (and topics/publication) show up
+					return this.getArticles()
 				})
 				.catch((error) => {
 					this.editArticleErrorMessage = error.response.data.data
+				})
+				.finally(() => {
 					this.articleIsUpdating = false
 				})
 		},

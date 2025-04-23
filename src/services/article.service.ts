@@ -15,19 +15,35 @@ class ArticleService {
 				throw error
 			})
 	}
+	// updateArticle(article) {
+	// 	return axios
+	// 		.put(API_URL + "articles/" + article.id, article, {
+	// 			headers: authHeader()
+	// 		})
+	// 		.then((response) => {
+	// 			console.log("Article updated:", response)
+	// 			return response.data
+	// 		})
+	// 		.catch((error) => {
+	// 			console.error("Error updating article:", error)
+	// 			throw error
+	// 		})
+	// }
 	updateArticle(article) {
+		// send JSON payload so title/author/link aren’t lost
+		const payload = {
+			title: article.title,
+			author: article.author,
+			link: article.link,
+			publication_id: Number(article.publication_id),
+			topics: article.topics
+		}
+
 		return axios
-			.put(API_URL + "articles/" + article.id, article, {
+			.put(`${API_URL}articles/${article.id}`, payload, {
 				headers: authHeader()
 			})
-			.then((response) => {
-				console.log("Article updated:", response)
-				return response.data
-			})
-			.catch((error) => {
-				console.error("Error updating article:", error)
-				throw error
-			})
+			.then((r) => r.data.data)
 	}
 	createArticle(article) {
 		let formData = new FormData()
@@ -36,6 +52,9 @@ class ArticleService {
 		formData.append("author", article.author)
 		formData.append("link", article.link)
 		formData.append("file", article.image)
+		if (Array.isArray(article.topics)) {
+			article.topics.forEach((id) => formData.append("topics[]", id))
+		}
 
 		return axios
 			.post(API_URL + "articles", formData, {
